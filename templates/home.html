@@ -1,41 +1,223 @@
-{% extends "layout.html" %}
-
-{% block content %}
-<section class = "title mb-0">
-  <div class="container-fluid p-0 m-0 ">
-      <div class=" main-header p-5 pb-2 text-center mw-100 ">
-        <h1 class = "mw-100"><strong>Editing is boring.</strong></h1>
-      </div>
-
-      <div class="secondary-header p-1 text-center ">
-        <h2 class = "">Let us help <strike class = 'you'>you</strike>.</h2>
-      </div>
-      <div class="tertiary-header p-1 text-center ">
-        <h2 class = "">Harness the power of AI without sacrificing creativity.</h2>
-      </div>
-
-    <div class = " p-5">
-        <h2 class = 'blurb'>Welcome to Succinct - where your words find their perfect balance. Tired of cumbersome editing tools that stifle your creativity? Say hello to effortless refinement with our AI-powered writing editor. Succinct doesn't just correct; it enhances.</h2>
+{% extends "layout.html" %} {% block content %}
+<!-- Hero section with yellow/orange gradient background -->
+<div class="hero-section">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Editing is boring.</h1>
+      <p>
+        Let us help <span class="strikethrough">you</span>.
+      </p>
+      <p>
+        Harness the power of AI without sacrificing creativity.
+      </p>
+      <a href="/page" class="button">Get Started</a>
     </div>
   </div>
-  <br>
-    <br>  <br>  <br>  <br>  <br>  <br>
-</section>
+</div>
 
+<div id="features" class="features-section">
+  <div class="container">
+    <h2>What We Offer</h2>
 
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <div class="feature-icon yellow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+        </div>
+        <div class="feature-content">
+          <h3>Effortless Refinement</h3>
+          <p>
+            Welcome to Succinct - where your words find their perfect balance.
+          </p>
+        </div>
+      </div>
 
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <div class="feature-icon orange">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+        </div>
+        <div class="feature-content">
+          <h3>AI-Powered</h3>
+          <p>
+            Tired of cumbersome editing tools that stifle your creativity?
+          </p>
+        </div>
+      </div>
 
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="feature-icon-container">
+          <div class="feature-icon amber">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+            </svg>
+          </div>
+        </div>
+        <div class="feature-content">
+          <h3>Enhance Your Writing</h3>
+          <p>
+            Say hello to effortless refinement with our AI-powered writing
+            editor. Succinct doesn't just correct; it enhances.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<style>
+  /* Hero Section */
+  .hero-section {
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #facc15, #f97316);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
 
+  .hero-content {
+    padding: 1rem;
+  }
 
+  .hero-text {
+    max-width: 28rem;
+    margin: 0 auto;
+  }
 
+  .hero-text h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
 
+  .hero-text p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+  }
 
+  .strikethrough {
+    text-decoration: line-through;
+  }
 
+  .button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    margin-top: 1.5rem;
+    font-weight: bold;
+    background-color: white;
+    color: #333;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-size: 1.125rem;
+    transition: all 0.3s ease;
+  }
 
+  .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
 
+  /* Features Section */
+  .features-section {
+    padding: 4rem 0;
+    background-color: #ffffff;
+  }
 
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
 
+  .features-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #374151;
+  }
 
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .features-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .feature-card {
+    background-color: #f3f4f6;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .feature-icon-container {
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem 0 1.5rem 0;
+  }
+
+  .feature-icon {
+    border-radius: 50%;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .yellow {
+    background-color: #facc15;
+  }
+
+  .orange {
+    background-color: #fb923c;
+  }
+
+  .amber {
+    background-color: #fbbf24;
+  }
+
+  .feature-content {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .feature-content h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #374151;
+  }
+
+  .feature-content p {
+    color: #6b7280;
+  }
+</style>
 
 {% endblock %}
