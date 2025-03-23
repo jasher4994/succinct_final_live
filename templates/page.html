@@ -1,0 +1,251 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class = "container page pt-0 p-3 ">
+    <h2 class = "text-center m-3 p-3">Analyse your text</h2>
+        <div class="row">
+            <div class="col-sm">
+                <div class = "m-auto text-center pt-3"> <h4><b>Insert your text  in the box below.</b></h1> </div>
+                <textarea class = "m-auto w-100 text-secondary" name="" id="text-area" rows="13" >This sentence has five words. Here are five more words. Five-word sentences are fine. But several together become monotonous. Listen to what is happening. The writing is getting boring. The sound of it drones. It’s like a stuck record. The ear demands some variety. Now listen. I vary the sentence length, and I create music. Music. The writing sings. It has a pleasant rhythm, a lilt, a harmony. I use short sentences. And I use sentences of medium length. And sometimes, when I am certain the reader is rested, I will engage him with a sentence of considerable length, a sentence that burns with energy and builds with all the impetus of a crescendo, the roll of the drums, the crash of the cymbals–sounds that say listen to this, it is important.” - Gary Provost&#13;&#10; &#13;&#10;We can also use this tool to look for adverbs, such as 'awkwardly', that might not need to be there. If you need an adverb to describe the action, it often means the verb is weak.   We can also look for negative words such as 'unfamiliar', which should be replaced with words like 'strange'.</textarea>
+                <div class = "m-auto text-center">
+                    <button class = "submit-button btn m-2" onclick= "output_text()"> Analyse this text</button>
+                </div>
+            </div>
+
+            <div class="col-sm pt-3">
+                <div>
+                    <p id = "total-words" class =  "pt-3"> Total words: </p>
+                    <hr>
+                    <p id = "total-sentences"> Total sentences: </p>
+                    <hr>
+                    <p id = "average-sentence-length">Average sentence length: </p>
+                    <hr>
+                    <p id = "readability-score">Readability score:</p>
+                    <hr>
+                    <p id = "sentence-variation-score">Sentence variation score (variation in sentence length):</p>
+                    <hr>
+                    <button class="check-button btn m-1 p-1 w-25" id = "check-pace" data-toggle="tooltip" data-placement="top" title="This button will analyse the pace of your text. The darker the red the faster pace.">Pace </button>
+                    <button class="check-button btn m-1 p-1 w-25" id = "check-readability" data-toggle="tooltip" data-placement="top" title="Green sentences are easy to read, red are more difficult.">Readability</button>
+                    <button class="check-button btn m-1 p-1 w-25" id = "clean-up" data-toggle="tooltip" data-placement="top" title="This button will highlight potentially redundant words. "> Clean-up</button>                    
+                </div>    
+            </div>
+            
+        </div>
+
+    <br>
+    <div class="container-fluid p-0">
+        <div id="outputArea" class = "output_area "></div>
+    </div>
+</div>
+<br><br><br><br><br>
+<br><br><br><br><br>
+
+
+
+<script> 
+
+function output_text() {
+    let text = document.getElementById("text-area").value;
+    get_summary_statistics(text);
+    document.getElementById("outputArea").innerHTML = text;
+}
+
+
+var split_sentences = function(text) {
+    var sentences = text.split(".");
+    return sentences
+}
+
+function syl_count(word) {
+    word = word.toLowerCase(); 
+    word = word.replace(/[^a-z]/gi,"");
+    if(word.length === 0) {return 0; }
+    if(word.length <= 3) { return 1; }       
+    word = word.replace(' ', '&#13');
+    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+    word = word.replace(/^y/, '');  
+	syls = word.match(/[aeiouy]{1,2}/g) //length; - this length is often going to null
+    if (syls == null) { return 0; }
+    syls = syls.length;
+    return syls
+
+}
+
+function get_standard_deviation (array) {
+  const n = array.length
+  const mean = array.reduce((a, b) => a + b) / n
+  return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+}
+
+
+
+function get_color_pace(i) {
+    var color = "";
+    if(i == 0) color = "#FEF9A7";
+    //up to 75 = red - fast paced
+    else if(i <= 2) color = "#ff0000";
+    else if(i <= 5) color = "#fa1515";
+    else if(i <= 10) color = "#fa1c1c";
+    else if(i <= 20) color = "#fa3b3b";
+    //75-100 is Yellow for average
+    else if(i <= 30) color = "#f84600";
+    else if(i <= 60) color = "#F77E21";
+    //100-300 is green for slow
+    else if(i <= 90) color = "#f3ab0e";
+    else if(i <= 120) color = "#f7b321";
+    else if(i <= 150) color = "#FAC213";
+    else if(i >= 150) color = "#f8da81";
+
+    return color;
+}
+
+function get_color_readability(i) {
+    var color = "";
+    if(i == 0) color = "#FCFEFF";
+    //up to 75 = red - fast paced
+    else if(i <= 1) color = "#50A55B";
+    else if(i <= 2) color = "#5AAF65";
+    else if(i <= 5) color = "#68B672";
+    else if(i <= 10) color = "#75BD7F";
+    //75-100 is green for average
+    else if(i <= 20) color = "#FCC14A;";
+    else if(i <= 30) color = "#FDC85E";
+    //100-300 is blue for slow
+    else if(i <= 40) color = "#F68179";
+    else if(i <= 60) color = "#F56F66";
+    else if(i <= 100) color = "#F45D52";
+    else if(i >= 100) color = "#F34B3F";
+
+
+    return color;
+}
+
+
+$("#check-pace").click(function() {
+    let text = document.getElementById("text-area").value;
+    var sentences = text.split(".");
+    var sentence_lengths = [];
+    html = "";
+    for(var i=0; i<sentences.length; i++) {
+        html += '<span style="background:'+get_color_pace(sentences[i].length)+';">'+sentences[i]+"."+'</span> ' ;
+    }
+
+    document.getElementById("outputArea").innerHTML = html;
+
+});
+
+$("#check-readability").click(function() {
+    let text = document.getElementById("text-area").value;
+    var sentences = text.split(".");
+    html = "";
+    for(var i=0; i<sentences.length; i++) {
+        console.log('syl count')
+        console.log(syl_count(sentences[i]))
+        html += '<span style="background:'+get_color_readability(syl_count(sentences[i]))+';">'+sentences[i]+"."+'</span> ' ;
+    }
+    
+    document.getElementById("outputArea").innerHTML = html;
+});
+
+function get_summary_statistics(text) {
+    //calculate sentence length
+    var sentences = text.split(".");
+    var total_sentences = sentences.length;
+
+    //calculate total words
+    var words = text.split(" ");
+    words.filter(n => n);
+    total_words = words.length;
+
+    //calculate average sentence length
+    average_sentence_length = Math.round(total_words/total_sentences);
+
+    //calculate total syllables
+    let total_syllables = 0;
+    for(var i=0; i<words.length; i++) {
+        if (words[i] !== null) {
+            total_syllables = total_syllables + syl_count(words[i]);
+        }
+
+    }
+
+    //calculate reading age 
+    let FK_score = 0.39 * (total_words/total_sentences) + 11.8 * (total_syllables/total_words) - 15.59
+
+    console.log("total_words: " + total_words)
+    console.log("total_sentences: " + total_sentences)
+    console.log("total_syllables: " + total_syllables)
+
+
+    //Calculating SVS (Standard deviation of the sentence lengths)
+    const sentence_lengths = []
+    for(var i=0; i<sentences.length; i++) {
+        sentence_lengths.push(sentences[i].length)
+    }
+    svs = get_standard_deviation(sentence_lengths)
+
+
+    //appending summary statistics
+    $("#total-words").text("Total words: " + total_words);
+    $("#total-sentences").text("Total sentences: " + total_sentences);
+    $("#average-sentence-length").text("Average sentence length: " + average_sentence_length + " words");
+    //insert Readability score
+    $("#readability-score").text("Reading age (years): " + Math.round(FK_score));
+    //insert sentence variation score
+    $("#sentence-variation-score").text("Sentence variation score (variation in sentence length): " + Math.round(svs));
+
+}
+
+
+$("#clean-up").click(function() {
+    let text = document.getElementById("text-area").value;
+    text = text.replaceAll(".", " .")
+    text = text.replaceAll(",", " ,")
+    text = text.replaceAll("'", " '")
+    var words = text.split(" ");
+    html = "";
+    for(var i=0; i<words.length; i++) {
+        console.log(words[i])
+        if (words[i] == '.') {
+            html += '. '
+
+        } else if (words[i] == ',') {
+            html += ', '
+
+        } else if (words[i] == "'") {
+            html += "'"
+        //if ends in ly then its an adverb and thus make it bold
+        } else if (words[i].endsWith('ly')) {
+            html += '<span style = "background: #F68179" ><u>' + words[i] + '</u></span>' + ' ';
+
+        //if begins with in or un then its a negative word and should be italic
+        } else if (words[i].startsWith('un')) {
+            html += '<span style = "background: #75BD7F" ><u>' + words[i] + '</u></span>' + ' ';
+
+        } else if (words[i].startsWith("'un")) {
+            html += '<span style = "background: #75BD7F" ><u>' + words[i] + '</u></span>' + ' ';
+
+        } else {
+            html += words[i]
+            html += ' '
+        }
+    }
+    document.getElementById("outputArea").innerHTML = html;
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}

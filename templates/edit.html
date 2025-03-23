@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2 class = "text-center m-3 p-3">Adjust</h2>
+
+<div class = "container w-75">
+
+    <form action="/edit" method="post">
+        <p>Drag to the right to increase emotional language.</p>
+        <div class="slidecontainer">
+            <input name = "emotion" type="range" min="1" max="10" value="1" class="slider" id="emotion">
+        </div>
+        <p>Drag to the right to increase the formality of your language.</p>
+        <div class="slidecontainer">
+            <input name = "formality" type="range" min="1" max="10" value="1" class="slider" id="formality">
+        </div>
+        <p>Drag to the right to summarize your text.</p>
+        <div class="slidecontainer">
+            <input name = "summarise" type="range" min="1" max="10" value="1" class="slider" id="summarise">
+        </div>
+        <textarea class = "m-auto w-100 text-secondary" name="text" id="text-area" rows="13" maxlength="1200" ></textarea>
+        <div class="text-center">
+            <input class = "btn bg-warning" type="submit" value="Edit my text!" />
+        </div>
+        <b>Max length = 1200 characters.</b>
+    </form>
+    <hr>
+    <div class="info-card col-md-12 " id = "" >
+        <div class="card  mb-3">
+          <div class="card-header text-center">How does this work?</div>
+          <div class="card-body">
+            <p class="card-text">
+                We take your text and submit it to an AI model which makes the required adjustments that you specify. If you leave
+                all of the sliders where they are your text will be unchanged. If you drag them to the right they will adjust accordingly.
+                The further right you go the more it will adjust.
+            </p>
+          <p> Bear in mind that formal language tends to be shorter than emotive language, so don't be surpised if your text gets shortened when you increase formality.</p>
+          </div>
+        </div>
+      </div>
+    {% if result %}
+    <h3 class = 'text-center'> Your edited text is below</h1>
+        <hr>
+    <div class="card p-3 m-3 text-output-card">
+        <div class="result"><b>{{ result }}</b></div>
+    </div>
+    {% endif %}
+</div>
+
+
+
+
+{% endblock %}
+

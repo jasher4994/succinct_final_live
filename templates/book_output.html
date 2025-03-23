@@ -1,0 +1,177 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h2 class = "text-center m-3 p-3">Analyse your full work</h2>
+
+<div class="container mt-3 w-100">
+  <div class="row">
+      <div class="col" align = "center">
+        <div class="card main-card mb-3" style="max-width: 30rem;">
+          <div class="card-header">
+            <h2>
+              Try another text?
+            </h2>
+          </div>
+          <div class="card-body">
+              <div m-auto p-3 m-3 text-center >
+                  <form method="POST" action="" enctype="multipart/form-data">
+                      <p><input type="file" name="file" class = "submit-btn"></p>
+                      <p><input class = "submit-btn btn-primary btn bg-warning" type="submit" value="Analyse my text!"></p>
+                  </form>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="container mt-3 pt-3">
+  <h2 class = "text-center">Here's the output, is it what you expected to see?</h2>
+  <h4 class = "text-center">Scroll down for more informaiton</h4>
+</div>
+
+
+<div class="h1 text-center">Results for {{filename}}</div>
+<div class="container">
+  <div class = "m-auto mt-5">
+    <canvas id="Chart"></canvas>
+  </div>
+</div>
+
+<div class="container-sm mt-5 " >
+  <div class="row">
+    <div class="info-card col-md-12" >
+      <div class="card  mb-3">
+        <div class="card-header text-center">What is going on here?</div>
+        <div class="card-body">
+          <h5 class="card-title text-center">Our algorithms tried to understand your writings story arc!</h5>
+          <p class="card-text">
+              Hover your mouse over the dots on the graph to see which sentence its looking at. The left hand side of the graph is the start of your work, and the right hand side the end. You can click the coloured buttons to
+              add or remove plots from the graph. Don't worry about the numbers they don't mean much - it's all relative importance.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="info-card col-md-12 " id = "use-info-output" >
+      <div class="card  mb-3">
+        <div class="card-header how-card text-center bg-none">How do I use this information?</div>
+        <div class="card-body">
+          <h5 class="card-title text-center">In any way you want! We leave the creativity to you!</h5>
+          <p class="card-text">
+            But here are some things to think about.
+          </p>
+          <p>
+            <ul>
+              <li>Are there any points where the pace of my work and sentiment move together? It could be interesting to observe how the pace of your text changes with sentiment. </li>
+              <li>What are the most difficult parts of your text to read. Some readers can be put off by difficult beginnings to documents. </li>
+              <li>At peak moments, are you writing at an impactful pace?</li>
+              <li>Is the sentiment of certain sections as you'd expect it to be?</li>
+              <li>There are no rules to great writing - so use this information as you see fit - or don't use it at all!</li>
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="info-card col-md-12 " >
+      <div class="card  mb-3">
+        <div class="card-header sentiment-card text-center">Sentiment score (yellow)</div>
+        <div class="card-body">
+          <h5 class="card-title text-center">What is it and why its important?</h5>
+          <p class="card-text">
+              The sentiment score (the yellow) is the computers understanding of the sentiment of your text. Our algorithms understand the sentiment of all words in the english language and average them out across sentences. 
+              Of course, adjustments are also made for nuances in the english language such as negation words like 'not' or enhancing words such as 'very' or 'extremely'. 
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="info-card col-md-12 " id = "pace-output" >
+      <div class="card  mb-3">
+        <div class="card-header pace-card text-center">Pace(Green)</div>
+        <div class="card-body">
+          <h5 class="card-title text-center">What does this mean?</h5>
+          <p class="card-text">
+            Pace is metric that we made ourselves - pace  doesn't necessarily mean a book is shorter in pacier sections. It's about how the story flows and the pace of events happening in regards to character development and description. In short pace describes how much action is going on and the speed it arrives. 
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="info-card col-md-12 " id = "readability-output" >
+      <div class="card  mb-3">
+        <div class="card-header readability-card text-center">Readability(Red)</div>
+        <div class="card-body">
+          <h5 class="card-title text-center">What does this mean?</h5>
+          <p class="card-text">
+            Pace and Readability are inherently intertwined - short sentences are easier to read. But they aren't identical. Our readability metric is the Flesch–Kincaid score - used by the U.S milatary.
+          </p>
+        </p> We plot them on the same graph so you can see the relationship between all of our metrics. Our metrics are useful together as well as in isolation. 
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<script>
+  // Line chart
+  new Chart(document.getElementById("Chart"), {
+  type: 'line',
+  data: {
+    labels: {{text| safe }},
+    datasets: [{
+        data: {{pace_data | safe }},
+        label: "Pace",
+        borderColor: 'rgb(80, 165, 91)',
+        backgroundColor: 'rgba(80, 165, 91, 0.5)',
+        fill: false,
+        cubicInterpolationMode: 'default',
+        tension: 0.8,
+      }, {
+        data: {{sentiment_data | safe }},
+        label: "Sentiment",
+        borderColor: 'rgb(251, 172, 14)',
+        fill: true,
+        backgroundColor: 'rgba(251, 172, 14, 0.5)',
+        cubicInterpolationMode: 'default',
+        tension: 0.8,
+      }, {
+        data: {{readabilty_data | safe }},
+        label: "Readability",
+        borderColor: 'rgb(243, 75, 63)',
+        fill: false,
+        cubicInterpolationMode: 'default',
+        tension: 0.8,
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Positive Cases of COVID in provinces of Canada'
+    },
+    hover: {
+     mode: 'index',
+     intersect: true
+    },
+    scales: {
+      x: {
+        display: false,
+        title: {
+          display: false,
+          text: 'Story progression'
+        }
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Value'
+        }
+      }
+    }
+  }
+});
+</script>
+
+{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h2 class = "text-center m-3 p-3">About us</h2>
+<div class = "container-sm text-center m-auto">
+    <p> Here at Succinct.app we intend to remove the drudgery from writing. We want to remove the boring stuff so you can focus on the fun stuff.</p>
+    <p> Created by </p>
+    <a href="https://jamesaasher.com"> James Asher</a>
+    <br>
+    <br>
+    <p> If you'd like to work me please get in contact.</p>
+    <p>As you can see this app is currently free, and I'd like to keep is that way. Even donating the price of a coffee would go a long way.</p>
+    <form action="https://www.paypal.com/donate" method="post" target="_top">
+        <input type="hidden" name="hosted_button_id" value="RZ2X3Y2H3RU78" />
+        <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+        <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
+    </form>
+
+
+</div>
+{% endblock %}
